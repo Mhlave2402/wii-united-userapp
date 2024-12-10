@@ -223,6 +223,16 @@ class RideRepository implements RideRepositoryInterface{
 
 
   @override
+  Future<Response> getSafeZones() async {
+    return await apiClient.getData(AppConstants.getSafeZones);
+  }
+
+  @override
+  Future<Response> isSafeZone(double latitude, double longitude) async {
+    return await apiClient.postData(AppConstants.isSafeZone, {'latitude': latitude, 'longitude': longitude});
+  }
+
+  @override
   Future add(value) {
     // TODO: implement add
     throw UnimplementedError();
