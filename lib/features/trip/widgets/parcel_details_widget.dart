@@ -123,7 +123,7 @@ class ParcelDetailsWidget extends StatelessWidget {
 class _ParcelTrackWidget extends StatelessWidget {
   final TripDetails tripDetails;
   const _ParcelTrackWidget({
-    super.key, required this.tripDetails,
+    required this.tripDetails,
   });
 
   @override

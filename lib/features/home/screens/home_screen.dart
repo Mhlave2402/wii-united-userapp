@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/features/auth/controllers/auth_controller.dart';
 import 'package:ride_sharing_user_app/features/coupon/controllers/coupon_controller.dart';
-import 'package:ride_sharing_user_app/features/home/widgets/banner_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/best_offers_widget.dart';
-import 'package:ride_sharing_user_app/features/home/widgets/category_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/coupon_home_widget.dart';
+import 'package:ride_sharing_user_app/features/home/widgets/custom_category_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/home_map_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/home_search_widget.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/home_referral_view_widget.dart';
@@ -31,6 +30,7 @@ import 'package:ride_sharing_user_app/features/profile/controllers/profile_contr
 import 'package:ride_sharing_user_app/features/ride/controllers/ride_controller.dart';
 import 'package:ride_sharing_user_app/common_widgets/app_bar_widget.dart';
 import 'package:ride_sharing_user_app/common_widgets/body_widget.dart';
+import 'package:ride_sharing_user_app/features/home/widgets/type_based_category_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -145,17 +145,43 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: CustomScrollView(slivers: [
                             SliverToBoxAdapter(child: Column(children: [
                                Padding(
-                                padding: const EdgeInsets.only(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical:Dimensions.paddingSize,horizontal: Dimensions.paddingSize,
+                                ),
+                                child:  Column(children: [
+
+                                  const TypeBasedCategoryView(),
+
+                                ],),
+                              ),
+                              const SizedBox(height:Dimensions.paddingSizeDefault),
+
+                              const HomeMyAddress(addressPage: AddressPage.home),
+
+                              const Padding(
+                                padding: EdgeInsets.only(
                                   top:Dimensions.paddingSize,left: Dimensions.paddingSize,
                                   right: Dimensions.paddingSize,
                                 ),
-                                child: Column(children: [
-                                  const BannerView(),
+                                child: HomeMapView(title: 'rider_around_you'),
+                              ),
 
-                                  const Padding(
-                                    padding: EdgeInsets.only(top:Dimensions.paddingSize),
-                                    child: CategoryView(),
-                                  ),
+                              if(config?.referralEarningStatus ?? false)
+                              const HomeReferralViewWidget(),
+
+                              const BestOfferWidget(),
+
+                              const HomeCouponWidget(),
+
+                              const SizedBox(height: 100)
+                            ])),
+                          ]),
+                        ),
+                      );
+                    });
+                  });
+                }),
+
 
                                   if((config?.externalSystem ?? false) && Get.find<AuthController>().isLoggedIn())...[
                                     const VisitToMartWidget(),
@@ -188,8 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: HomeMapView(title: 'rider_around_you'),
                               ),
 
-                              if(config?.referralEarningStatus ?? false)
-                              const HomeReferralViewWidget(),
+                              if(config?.referralEarningStatus ?? false) {
+                                const HomeReferralViewWidget()
+                              },
 
                               const BestOfferWidget(),
 
@@ -199,13 +226,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ])),
                           ]),
                         ),
-                      );
+                      )
                     });
                   });
                 }),
 
                 (rideCount + parcelCount) != 0 ?
-                Positioned(child: Align(alignment: Alignment.topRight,
+                Positioned(child = Align(alignment: Alignment.topRight,
                   child: Padding(
                     padding: EdgeInsets.only(top: Get.height * 0.33),
                     child: GestureDetector(
@@ -249,10 +276,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 )) :
-                const SizedBox(),
+                SizedBox(),
 
                 if(clickedMenu)
-                  Positioned(child: Align(alignment: Alignment.topRight,
+                  Positioned(child = Align(alignment: Alignment.topRight,
                     child: Padding(
                       padding: EdgeInsets.only(top: Get.height * 0.33),
                       child: GetBuilder<RideController>(builder: (rideController) {
@@ -373,7 +400,7 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           }
       ),
-      floatingActionButton: GetBuilder<RideController>(builder: (rideController){
+      floatingActionButton: GetBuilder<RideController>(builder = (rideController){
         return rideController.biddingList.isNotEmpty ?
         Padding(
           padding: EdgeInsets.only(bottom: Get.height * 0.08),
